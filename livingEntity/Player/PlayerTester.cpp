@@ -18,7 +18,8 @@ void grade(bool isCorrect)
     }
 }
 
-bool checkHealthChangeMatches(int healthAfterAttack, int currentPlayerHealth)
+bool checkHealthChangeMatches(int healthAfterAttack, 
+                              int currentPlayerHealth)
 {
     if(healthAfterAttack != currentPlayerHealth)
     {
@@ -34,11 +35,21 @@ bool checkHealthChangeMatches(int healthAfterAttack, int currentPlayerHealth)
         // clean this and move to output Function
         // and make it write to a debug file
         std::cout << "newHealth = " << healthAfterAttack << std::endl;
-        std::cout << "player health now = " << currentPlayerHealth << std::endl;
+        std::cout << "player health now = " << currentPlayerHealth 
+                  << std::endl;
 
         return 0;
     }
     return 1;
+}
+
+bool checkDead(int currentHealth, int currentStartingHealth)
+{
+    if(currentHealth == currentStartingHealth)
+    {
+        return 1;
+    }
+    return 0;
 }
 
 // find a way to put this reading top to bottom
@@ -46,13 +57,19 @@ bool checkHealthChangeMatches(int healthAfterAttack, int currentPlayerHealth)
 void testPlayerDamage(Player &player, int damage)
 {
     int healthBeforeAttack = player.getHealth();
-    player.takeDamage(damage);
+    int startingHealthBeforeAttack = player.getStartingHealth();
+
+    // This line makes player.health = player.health - damage
+    // If leveled up, then gainXp(int) resets stats
     int healthAfterAttack = healthBeforeAttack - damage;
 
-    //move this to a checkHealth check and pass in player instead
-    //probably want to check if death first
-    //checkDeath(newHealth, startingHealth);
-    bool healthIsCorrect = checkHealthChangeMatches(healthAfterAttack, player.getHealth());
+    player.takeDamage(damage);
+
+    int currentStartingHealth = player.getStartingHealth();
+    int currentHealth = player.getHealth();
+
+    bool healthIsCorrect = checkHealthChangeMatches(healthAfterAttack, 
+                                                    player.getHealth());
     grade(healthIsCorrect);
 }
 
@@ -70,29 +87,62 @@ bool checkXpChangeMatches(int xpAfterGain, int currentXpNeeded)
 {
     //debug flag would be nice
     //std::cout << "xpAfterGain = " << xpAfterGain << std::endl;
-    //std::cout << "currentXpneeded = " << currentXpNeeded << std::endl;
+    //std::cout << "currentXpNeeded = " << currentXpNeeded << std::endl;
     if(xpAfterGain != currentXpNeeded)
     {
-        // I need to find a different check for leveled
-        // up current xp needed
-        if(xpAfterGain <= 0 && currentXpNeeded > 10)
-        {
-            //std::cout << "Level up?? " << std::endl;
-            return 1;
-        }
         return 0;
     }
     return 1;
 }
 
+// Drunk me says that this might be handy later
+bool checkLevelUp(int startingXpNeededBeforeXpGain, int currentXpNeeded)
+{
+    if(currentXpNeeded > startingXpNeededBeforeXpGain)
+    {
+       return 1; 
+    }
+    return 0;
+}
+
+bool checkStartingAndCurrentXpMatch(int currentXpNeeded, int currentStartingXpNeeded)
+{
+    if(currentXpNeeded == currentStartingXpNeeded)
+    {
+        return 1;
+    }
+    return 0;
+}
+
 void testXpGained(Player &player, int xpGained)
 {
     int xpNeededBeforeGain = player.getXpNeeded();
+    int startingXpNeededBeforeXpGain = player.getStartingXpNeeded();
+
     int xpNeededAfterGain = xpNeededBeforeGain - xpGained;
+
+    // This line makes player.xpNeeded = player.xpNeeded - xpGained
+    // If leveled up, then gainXp(int) resets stats
     player.gainXp(xpGained);
 
-    //checkLevelUp(xpAfterGain, playerStartingHealth);
-    bool xpIsCorrect = checkXpChangeMatches(xpNeededAfterGain, player.getXpNeeded());
+    int currentXpNeeded = player.getXpNeeded();
+    int currentStartingXpNeeded = player.getStartingXpNeeded();
+
+    bool leveledUp = checkLevelUp(startingXpNeededBeforeXpGain,
+                                  currentStartingXpNeeded);
+
+    bool xpIsCorrect = 0;
+    if(!leveledUp)
+    {
+        xpIsCorrect = checkXpChangeMatches(xpNeededAfterGain,
+                                           currentXpNeeded); 
+    }
+    else // if leveled up
+    {
+        xpIsCorrect = checkStartingAndCurrentXpMatch(currentXpNeeded, 
+                                                     currentStartingXpNeeded);
+    }
+        
     grade(xpIsCorrect);
 }
 
