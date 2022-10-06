@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 
 #include "Player.h"
 
@@ -8,7 +9,9 @@
 //}
 
 int score = 0;
-//bool debug = 1;
+bool debugMode = 1;
+std::ofstream debugFile;
+std::ofstream logFile;
 
 void grade(bool isCorrect)
 {
@@ -16,6 +19,10 @@ void grade(bool isCorrect)
     {
         score += 1;
     }
+}
+
+void initialize()
+{
 }
 
 bool checkHealthChangeMatches(int healthAfterAttack, 
@@ -26,16 +33,19 @@ bool checkHealthChangeMatches(int healthAfterAttack,
         // you have to check this against the startingPlayerHealth
         if(healthAfterAttack <= 0 && currentPlayerHealth == 10)
         {
-            // check that deathEvent worked, make sure that the
-            // reset worked
-            //std::cout << "Player is dead?? newHealth = " << newHealth <<
-            //    ", player Health = " << player.getHealth() << std::endl;
+            if(debugMode)
+            {
+                debugFile << "Player is dead?? newHealth = " 
+                        << healthAfterAttack <<
+                    ", player Health = " 
+                    << currentPlayerHealth << std::endl;
+            }
             return 1;
         }
         // clean this and move to output Function
         // and make it write to a debug file
-        std::cout << "newHealth = " << healthAfterAttack << std::endl;
-        std::cout << "player health now = " << currentPlayerHealth 
+        debugFile << "newHealth = " << healthAfterAttack << std::endl;
+        debugFile << "player health now = " << currentPlayerHealth 
                   << std::endl;
 
         return 0;
@@ -85,9 +95,11 @@ void damageTest(Player &testPlayer)
 
 bool checkXpChangeMatches(int xpAfterGain, int currentXpNeeded)
 {
-    //debug flag would be nice
-    //std::cout << "xpAfterGain = " << xpAfterGain << std::endl;
-    //std::cout << "currentXpNeeded = " << currentXpNeeded << std::endl;
+    if(debugMode)
+    {
+        debugFile << "xpAfterGain = " << xpAfterGain << std::endl;
+        debugFile << "currentXpNeeded = " << currentXpNeeded << std::endl;
+    }
     if(xpAfterGain != currentXpNeeded)
     {
         return 0;
@@ -169,10 +181,14 @@ void testPlayerObject()
 
     // print to log file
     // TODO:writeTesterOutputFunction/File
-    std::cout << "score = " << score << std::endl;
+    logFile << "score = " << score << std::endl;
 }
 
 int main()
 {
+    debugFile.open("debug.log");
+    logFile.open("out.log");
     testPlayerObject();
+    debugFile.close();
+    logFile.close();
 }
