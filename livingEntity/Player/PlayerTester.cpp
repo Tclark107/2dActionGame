@@ -78,6 +78,13 @@ void testPlayerDamage(Player &player, int damage)
     int currentStartingHealth = player.getStartingHealth();
     int currentHealth = player.getHealth();
 
+    // check dead
+    //  if currenthealth is = tobase health then you died and code
+    //  is working
+    //  depending on this out come
+    //  check if the health change matches based off of damage
+    //  which is what this function does
+    //  otherwise grade what the check dead did
     bool healthIsCorrect = checkHealthChangeMatches(healthAfterAttack, 
                                                     player.getHealth());
     grade(healthIsCorrect);
