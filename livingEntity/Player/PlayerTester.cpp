@@ -107,6 +107,7 @@ bool checkXpChangeMatches(int xpAfterGain, int currentXpNeeded)
         debugFile << "xpAfterGain = " << xpAfterGain << std::endl;
         debugFile << "currentXpNeeded = " << currentXpNeeded << std::endl;
     }
+
     if(xpAfterGain != currentXpNeeded)
     {
         return 0;
@@ -144,6 +145,7 @@ void testXpGained(Player &player, int xpGained)
     // If leveled up, then gainXp(int) resets stats
     player.gainXp(xpGained);
 
+    //maybe put this in a function
     int currentXpNeeded = player.getXpNeeded();
     int currentStartingXpNeeded = player.getStartingXpNeeded();
 
@@ -151,6 +153,9 @@ void testXpGained(Player &player, int xpGained)
                                   currentStartingXpNeeded);
 
     bool xpIsCorrect = 0;
+    // pass in level up to checkXpMatches, maybe not cause we need different data
+    // try and find a way to make this cleaner mash it into 1 function
+    // and then have that function check for level up or not
     if(!leveledUp)
     {
         xpIsCorrect = checkXpChangeMatches(xpNeededAfterGain,
