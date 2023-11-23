@@ -1,6 +1,12 @@
-class TesterBase
+#include <fstream>
+
+class TestBase
 {
 	public:
+		TestBase();
+
+		void addOneToGrade();
+		int getGrade();
 
 	private:
 		int grade = 0;
@@ -11,7 +17,5 @@ class TesterBase
 
 		void Initialize();
 		bool checkObjectCreated(/*template*/);
-		int getGrade();
-		void addOneToGrade();
 
 };

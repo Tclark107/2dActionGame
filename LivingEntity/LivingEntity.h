@@ -8,6 +8,13 @@ class LivingEntity
     // class to class basis
     // make a makefile!!! 
     public:
+        int getHealth();
+        int getLevel();
+        int getLowAttack();
+        int getHighAttack();
+        int getStartingHealth();
+
+		void takeDamage(int damage);
 
     private:
         int health = 10;
@@ -17,15 +24,8 @@ class LivingEntity
         int level = 1;
 		int startingHealth = 10;
 
-        int getHealth();
-        int getLevel();
-        int getLowAttack();
-        int getHighAttack();
-        int getStartingHealth();
-
 		// How big can attack get?? is int right here
 		int calculateAttack();
-		void takeDamage(int damage);
 		bool checkEntityDeath();
 		void resetHealth();
         void deathEvent();

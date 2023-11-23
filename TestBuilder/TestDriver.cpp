@@ -1,12 +1,12 @@
 #include <iostream>
-#include <fstream>
 
-#include "TesterBase.h"
+#include "TestBase.h"
 
-int maint()
+int main()
 {
-	TesterBase Test;
-	Test.Initialize();
+	TestBase Test;
 	
+	Test.addOneToGrade();
+	std::cout << Test.getGrade() << std::endl;
 }
 

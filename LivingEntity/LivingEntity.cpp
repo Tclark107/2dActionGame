@@ -60,7 +60,8 @@ void LivingEntity::resetHealth()
 {
     this->health = this->getStartingHealth();
 }
-	
+
+// This needs to be virtual so I can overwrite it
 void LivingEntity::deathEvent()
 {
     //TODO: print this to log file

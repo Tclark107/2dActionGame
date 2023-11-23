@@ -43,16 +43,17 @@ void Player::increaseLevel()
 
 void Player::levelUpEvent()
 {
-	increaseStartingXp();
-	increaseStartingHealth();
+	Player::increaseStartingXp();
+	Player::increaseStartingHealth();
 
-	resetHealth();
-	resetXp();
+	// 
+	Player::resetHealth();
+	Player::resetXp();
 
 	increaseLevel();
 
     //TODO: print this to log file
-    std::cout << "You Leveled up!!! You are now level " << this->level << std::endl; 
+    std::cout << "You Leveled up!!! You are now level " << getLevel() << std::endl; 
 }
 
 void Player::resetXP()
@@ -60,6 +61,8 @@ void Player::resetXP()
     this->health = this->getStartingHealth();
 }
 
+
+// Need to make parent class virtual
 void Player::deathEvent()
 {
     //TODO: print this to log file
